@@ -464,7 +464,7 @@ class GaussianDiffusion(nn.Module):
 
         self.objective = objective
 
-        assert objective in {'pred_noise', 'pred_x0', 'pred_v'}, 'objective must be either pred_noise (predict noise) or pred_x0 (predict image start) or pred_v (predict v [v-parameterization as defined in appendix D of progressive distillation paper, used in imagen-video successfully])'
+        assert objective in {'pred_noise', 'pred_x0', 'pred_v'}, 'objective must be either pred_noise (predict noise) or pred_x0 (predict image start) or pred_v (predict v [v-parameterization as defined in appendix D of progressive distillation paper (https://arxiv.org/pdf/2202.00512.pdf), used in imagen-video successfully])'
 
         if beta_schedule == 'linear':
             beta_schedule_fn = linear_beta_schedule
@@ -711,6 +711,7 @@ class GaussianDiffusion(nn.Module):
         # if doing self-conditioning, 50% of the time, predict x_start from current set of times
         # and condition with unet with that
         # this technique will slow down training by 25%, but seems to lower FID significantly
+        # TODO: what is self-conditioning?
 
         x_self_cond = None
         if self.self_condition and random() < 0.5:
@@ -828,7 +829,7 @@ class Trainer(object):
         # dataset and dataloader
 
         self.ds = Dataset(folder, self.image_size, augment_horizontal_flip = augment_horizontal_flip, convert_image_to = convert_image_to)
-        dl = DataLoader(self.ds, batch_size = train_batch_size, shuffle = True, pin_memory = True, num_workers = cpu_count())
+        dl = DataLoader(self.ds, batch_size = train_batch_size, shuffle = True, pin_memory = True, num_workers = cpu_count()) # TODO: num_workers = 0 is important for debugging, otherwise cpu_count()
 
         dl = self.accelerator.prepare(dl)
         self.dl = cycle(dl)
