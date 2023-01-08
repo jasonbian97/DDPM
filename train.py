@@ -22,7 +22,7 @@ trainer = Trainer(
     train_num_steps = 200000,         # total training steps
     gradient_accumulate_every = 2,    # gradient accumulation steps
     ema_decay = 0.995,                # exponential moving average decay
-    amp = True,                        # turn on mixed precision
+    amp = False,                        # turn off mixed precision for stable training
     save_and_sample_every=2000,       # save and sample every n steps
 )
 
