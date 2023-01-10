@@ -737,7 +737,8 @@ class GaussianDiffusion(nn.Module):
         loss = reduce(loss, 'b ... -> b (...)', 'mean')
 
         loss = loss * extract(self.p2_loss_weight, t, loss.shape)
-        return loss.mean()
+        # return loss.mean() # This might cause problem when using half precision
+        return loss.sum() / b
 
     def forward(self, img, *args, **kwargs):
         b, c, h, w, device, img_size, = *img.shape, img.device, self.image_size

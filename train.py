@@ -17,12 +17,13 @@ diffusion = GaussianDiffusion(
 trainer = Trainer(
     diffusion,
     '/home/zhangxing/Projects/DiffusionModels/cifar10/train',
+    # "/mnt/ssd3/Projects/DiffusionModels/cifar10/train",
     train_batch_size = 64,
     train_lr = 8e-5,
     train_num_steps = 200000,         # total training steps
     gradient_accumulate_every = 2,    # gradient accumulation steps
     ema_decay = 0.995,                # exponential moving average decay
-    amp = False,                        # turn off mixed precision for stable training
+    amp = True,                        # turn off mixed precision for stable training
     save_and_sample_every=2000,       # save and sample every n steps
 )
 
